@@ -11,7 +11,9 @@ class helpers:
         euclidian_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)
         return euclidian_distance
 
-class 
+class parse_csv:
+    def __init__(self):
+        pass
 
 def main():
     pass
