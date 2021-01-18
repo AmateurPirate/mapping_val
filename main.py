@@ -13,13 +13,15 @@ class helpers:
 
 class parse_csv:
     def __init__(self, csv_path):
-        self.df = pd.read_csv(csv_path)
+        self.df = pd.read_csv(csv_path, header=2, index_col=0)
         self.add_vol()
         self.get_six_points()
 
     def add_vol(self):
         for ch in 'xyz':
-            self.df[ch + 'vol'] = self.df['DLC_3D']['one'][ch].rolling(45).std()
+            self.df[ch + 'vol'] = self.df[ch].rolling(45).std()
+        print(self.df.tail())
+
 
     def get_six_points(self):
         pass
@@ -27,7 +29,7 @@ class parse_csv:
 def main():
     csv_path = './calib_ring_5_DLC_3D.csv' 
     pc = parse_csv(csv_path)
-    print(pc.df.head())
+    # print(pc.df.head())
     pass
 
 if __name__ == '__main__':
