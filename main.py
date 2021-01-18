@@ -20,11 +20,15 @@ class parse_csv:
     def add_vol(self):
         for ch in 'xyz':
             self.df[ch + 'vol'] = self.df[ch].rolling(45).std()
-        print(self.df.tail())
+            # print(ch+'vol max: ', self.df[ch + 'vol'].max())
 
 
     def get_six_points(self):
-        pass
+        seen = set()
+        xstd = self.df['x'].std()
+        ystd = self.df['y'].std()
+        zstd = self.df['z'].std()
+        print(xstd, ystd, zstd)
 
 def main():
     csv_path = './calib_ring_5_DLC_3D.csv' 
