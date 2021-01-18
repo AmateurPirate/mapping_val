@@ -12,8 +12,12 @@ class helpers:
         return euclidian_distance
 
 class parse_csv:
-    def __init__(self):
-        pass
+    def __init__(self, csv_path):
+        self.df = pd.read_csv(csv_path)
+        self.get_six_points()
+
+    def get_six_points(self):
+        self.df['vol'] = pd.rolling_std(self.df, 45)
 
 def main():
     pass
