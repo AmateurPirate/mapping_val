@@ -33,6 +33,8 @@ class parse_csv:
     def get_six_points(self):
         vol_thresh = 7.5*10e-4
         tmp = self.df[(self.df.xvol < vol_thresh) & (self.df.yvol < vol_thresh) & (self.df.zvol < vol_thresh)]
+        print(tmp.iloc[0])
+        # self.points.append()
         for _, row in tmp.head(2).iterrows():
             x, y, z = row.iat[0], row.iat[1], row.iat[2]
             if self.is_different_enough(x, y, z):
@@ -40,12 +42,17 @@ class parse_csv:
 
     # checks to see if this point is different enough from the other points in seen
     # this prevents getting a bunch of consecutive points
-    def is_different_enough(self, x, y, z):
+    def is_different_enough(self, cx, cy, cz):
+        INF = float('inf')
+        
         xstd = self.df['x'].std()
         ystd = self.df['y'].std()
         zstd = self.df['z'].std()
 
-        
+        min_cum_zscore = INF
+
+        for x, y, z in self.points:
+            min_cum_zscore = min(min_cum_zscore, abs(cx - x)/xtd + abs(cy - y)/ystd + abs(cz - z)/zstd)
 
         
 
