@@ -21,7 +21,8 @@ class helpers:
         N = len(points)
 
         if N != 6:
-            warnings.warn(f'you have {N} points')
+            msg = f'you have {N} points'
+            warnings.warn(msg)
 
         dists = []
 
@@ -85,14 +86,20 @@ class parse_csv:
             min_cum_zscore = min(min_cum_zscore, abs(cx - x)/xstd + abs(cy - y)/ystd + abs(cz - z)/zstd)
 
         return min_cum_zscore > zscore_thresh
-        
 
+# validate accuracy with points taken out of video...
+# did this and it works perfectly...
+
+# manually selected points from calib_ring_5_DLC_3D.csv
+points = [[-43.53, 5.35, 38.22], [-45.45, 5.37, 39.46], [-45.44, 2.56, 39.53], [-45.44, -0.4, 39.6], [-43.53, -0.57, 38.37], [-43.58, 2.38, 38.26]]
+# calib_ring_6_DLC_3D.csv
+points = [[-44.4, 5.09, 36.93], [-46.21, 5.05, 38.12], [-46.25, 2.56, 38.11], [-46.21, -0.3, 38.22], [-44.45, -0.5, 37.02], [-44.5, 2.5, 36.94]]
 
 def main():
-    csv_path = './calib_ring_5_DLC_3D.csv' 
+    csv_path = './calib_ring_6_DLC_3D.csv' 
     pc = parse_csv(csv_path)
     h = helpers()
-    ans = h.return_euc_dists(pc.points)
+    ans = h.return_euc_dists(points)
     print(ans)
 
 if __name__ == '__main__':
