@@ -89,7 +89,7 @@ class parse_csv:
 
 
 def main():
-    csv_path = './calib_ring_8_DLC_3D.csv' 
+    csv_path = './calib_ring_5_DLC_3D.csv' 
     pc = parse_csv(csv_path)
     h = helpers()
     ans = h.return_euc_dists(pc.points)
