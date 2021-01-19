@@ -1,6 +1,9 @@
 import pandas as pd
 import math
 from random import randint
+import warnings
+from sklearn.preprocessing import MinMaxScaler
+import numpy as np
 
 
 class helpers:
@@ -13,7 +16,32 @@ class helpers:
         x2, y2, z2 = p2
         euclidian_distance = math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2)
         return euclidian_distance
+
+    def return_euc_dists(self, points):
+        N = len(points)
+
+        if N != 6:
+            warnings.warn(f'you have {N} points')
+
+        dists = []
+
+        for i in range(1, N):
+            dists.append(self.euc_dist(points[i-1], points[i]))
     
+        dists.append(self.euc_dist(points[-1], points[0]))
+
+        dists = self.min_max_scaler(dists)
+
+        return dists
+
+    def min_max_scaler(self, dists):
+        dists = np.array(dists)
+        scaler = MinMaxScaler(tuple([5, 6]))
+        dists = scaler.fit_transform(dists.reshape(-1, 1))
+
+        return dists
+
+
 
 class parse_csv:
     def __init__(self, csv_path):
@@ -27,7 +55,6 @@ class parse_csv:
     def add_vol(self):
         for ch in 'xyz':
             self.df[ch + 'vol'] = self.df[ch].rolling(45).std()
-            # print(ch+'vol max: ', self.df[ch + 'vol'].max())
 
     # gets the 6 points used in each calibration video
     def get_six_points(self):
@@ -62,9 +89,11 @@ class parse_csv:
 
 
 def main():
-    csv_path = './calib_ring_5_DLC_3D.csv' 
+    csv_path = './calib_ring_8_DLC_3D.csv' 
     pc = parse_csv(csv_path)
-    print(pc.points)
+    h = helpers()
+    ans = h.return_euc_dists(pc.points)
+    print(ans)
 
 if __name__ == '__main__':
     main()
