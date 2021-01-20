@@ -4,6 +4,7 @@ from random import randint
 import warnings
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+import networkx as nx
 
 
 class helpers:
@@ -29,9 +30,9 @@ class helpers:
         for i in range(1, N):
             dists.append(self.euc_dist(points[i-1], points[i]))
     
-        dists.append(self.euc_dist(points[-1], points[0]))
+        # dists.append(self.euc_dist(points[-1], points[0]))
 
-        dists = self.min_max_scaler(dists)
+        # dists = self.min_max_scaler(dists)
 
         return dists
 
@@ -87,20 +88,46 @@ class parse_csv:
 
         return min_cum_zscore > zscore_thresh
 
+class visualize_graph(helpers):
+    def __init__(self, point_cloud):
+        self.point_cloud = point_cloud
+        self.adj_list = []
+        self.get_adj_list()
+        print(self.adj_list)
+
+    def get_adj_list(self):
+        node_names = 'abcdef'
+        for i in range(N):
+            for j in range(i):
+                self.adj_list.append([node_names[i], node_names[j], self.euc_dist(self.point_cloud[i], self.point_cloud[j])])
+
+    
+        
+
+
+
 # validate accuracy with points taken out of video...
 # did this and it works perfectly...
 
 # manually selected points from calib_ring_5_DLC_3D.csv
 points = [[-43.53, 5.35, 38.22], [-45.45, 5.37, 39.46], [-45.44, 2.56, 39.53], [-45.44, -0.4, 39.6], [-43.53, -0.57, 38.37], [-43.58, 2.38, 38.26]]
 # calib_ring_6_DLC_3D.csv
-points = [[-44.4, 5.09, 36.93], [-46.21, 5.05, 38.12], [-46.25, 2.56, 38.11], [-46.21, -0.3, 38.22], [-44.45, -0.5, 37.02], [-44.5, 2.5, 36.94]]
+# points = [[-44.4, 5.09, 36.93], [-46.21, 5.05, 38.12], [-46.25, 2.56, 38.11], [-46.21, -0.3, 38.22], [-44.45, -0.5, 37.02], [-44.5, 2.5, 36.94]]
 
+# calib_ring_7_DLC_3D.csv
+# points = [[-45.51, 4.66, 35.1], [-47, 4.62, 36.1], [-47.11, 2.43, 36.11], [-47.14, -0.52, 36.22]]
 def main():
-    csv_path = './calib_ring_6_DLC_3D.csv' 
-    pc = parse_csv(csv_path)
-    h = helpers()
-    ans = h.return_euc_dists(points)
-    print(ans)
+    DEBUG = False
+
+    if not DEBUG:
+        vg = visualize_graph(points)
+
+    else:
+        csv_path = './calib_ring_6_DLC_3D.csv' 
+        pc = parse_csv(csv_path)
+        h = helpers()
+        ans = h.return_euc_dists(points)
+        print(ans)
 
 if __name__ == '__main__':
     main()
