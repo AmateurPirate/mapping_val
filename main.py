@@ -5,6 +5,7 @@ import warnings
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import networkx as nx
+import matplotlib.pyplot as plt
 
 
 class helpers:
@@ -89,19 +90,52 @@ class parse_csv:
         return min_cum_zscore > zscore_thresh
 
 class visualize_graph(helpers):
-    def __init__(self, point_cloud):
+    def __init__(self, point_cloud, fn='weighted_adj_list.txt'):
         self.point_cloud = point_cloud
+        self.fn = fn
         self.adj_list = []
         self.get_adj_list()
-        print(self.adj_list)
+        self.write_adj_list()
+        self.G = nx.read_weighted_edgelist(self.fn)
+        self.get_pos_dict()
+
+        # print(self.adj_list)
+        self.plot_graph()
 
     def get_adj_list(self):
         N = len(self.point_cloud)
         node_names = [chr(x) for x in range(ord('a'), ord('z')+1)]
-        print(node_names)
+
         for i in range(N):
             for j in range(i):
                 self.adj_list.append(node_names[i] + ' ' + node_names[j] + ' ' + str(round(self.euc_dist(self.point_cloud[i], self.point_cloud[j]), 4)))
+
+    def write_adj_list(self):
+        with open(self.fn, 'w') as f:
+            for edge in self.adj_list:
+                f.write(edge + '\n')
+
+    def get_pos_dict(self):
+        N = len(self.point_cloud)
+        d = dict()
+        positions = [[0, 0], [0, 5], [-6, 5], [-12, 5], [-12, 0], [-6, 0]]
+        positions = [[1,1], [2,2], [3,3], [4,4],[5,5], [6,6]]
+        idx = 0
+        for node in self.G.nodes:
+            d[node] = tuple(positions[idx])
+            idx += 1
+
+        return d
+
+    def plot_graph(self):
+        networkx_version = nx.__version__
+        print(f'{networkx_version=}')
+
+        pos = self.get_pos_dict()
+        labels = nx.get_edge_attributes(self.G,'weight')
+        
+        nx.draw_networkx_edge_labels(self.G,pos,edge_labels=labels)
+        plt.savefig('z2.png')
 
     
         
