@@ -135,19 +135,9 @@ class visualize_graph(helpers):
         # pos = nx.spring_layout(self.G)
         labels = nx.get_edge_attributes(self.G, 'weight')
 
-        print(type(self.G))
-        print('\n')
-        print(pos)
-        print('\n')
-        print(labels)
         nx.draw(self.G, pos=pos, with_labels=True)
         nx.draw_networkx_edge_labels(self.G, pos, edge_labels=labels)
-        plt.savefig('z2.png')
-
-    
-        
-
-
+        plt.savefig('z6.png')
 
 # validate accuracy with points taken out of video...
 # did this and it works perfectly...
@@ -155,7 +145,7 @@ class visualize_graph(helpers):
 # manually selected points from calib_ring_5_DLC_3D.csv
 points = [[-43.53, 5.35, 38.22], [-45.45, 5.37, 39.46], [-45.44, 2.56, 39.53], [-45.44, -0.4, 39.6], [-43.53, -0.57, 38.37], [-43.58, 2.38, 38.26]]
 # calib_ring_6_DLC_3D.csv
-# points = [[-44.4, 5.09, 36.93], [-46.21, 5.05, 38.12], [-46.25, 2.56, 38.11], [-46.21, -0.3, 38.22], [-44.45, -0.5, 37.02], [-44.5, 2.5, 36.94]]
+points = [[-44.4, 5.09, 36.93], [-46.21, 5.05, 38.12], [-46.25, 2.56, 38.11], [-46.21, -0.3, 38.22], [-44.45, -0.5, 37.02], [-44.5, 2.5, 36.94]]
 
 # calib_ring_7_DLC_3D.csv
 # points = [[-45.51, 4.66, 35.1], [-47, 4.62, 36.1], [-47.11, 2.43, 36.11], [-47.14, -0.52, 36.22]]
