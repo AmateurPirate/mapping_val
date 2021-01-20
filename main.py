@@ -119,7 +119,7 @@ class visualize_graph(helpers):
         N = len(self.point_cloud)
         d = dict()
         positions = [[0, 0], [0, 5], [-6, 5], [-12, 5], [-12, 0], [-6, 0]]
-        positions = [[1,1], [2,2], [3,3], [4,4],[5,5], [6,6]]
+        positions = [[1,6], [1,1], [6,6], [12,6],[12,1], [6,1]]
         idx = 0
         for node in self.G.nodes:
             d[node] = tuple(positions[idx])
@@ -132,9 +132,16 @@ class visualize_graph(helpers):
         print(f'{networkx_version=}')
 
         pos = self.get_pos_dict()
-        labels = nx.get_edge_attributes(self.G,'weight')
-        
-        nx.draw_networkx_edge_labels(self.G,pos,edge_labels=labels)
+        # pos = nx.spring_layout(self.G)
+        labels = nx.get_edge_attributes(self.G, 'weight')
+
+        print(type(self.G))
+        print('\n')
+        print(pos)
+        print('\n')
+        print(labels)
+        nx.draw(self.G, pos=pos, with_labels=True)
+        nx.draw_networkx_edge_labels(self.G, pos, edge_labels=labels)
         plt.savefig('z2.png')
 
     
