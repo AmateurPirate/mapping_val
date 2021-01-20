@@ -96,10 +96,12 @@ class visualize_graph(helpers):
         print(self.adj_list)
 
     def get_adj_list(self):
-        node_names = 'abcdef'
+        N = len(self.point_cloud)
+        node_names = [chr(x) for x in range(ord('a'), ord('z')+1)]
+        print(node_names)
         for i in range(N):
             for j in range(i):
-                self.adj_list.append([node_names[i], node_names[j], self.euc_dist(self.point_cloud[i], self.point_cloud[j])])
+                self.adj_list.append(node_names[i] + ' ' + node_names[j] + ' ' + str(round(self.euc_dist(self.point_cloud[i], self.point_cloud[j]), 4)))
 
     
         
